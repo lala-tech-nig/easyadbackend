@@ -12,6 +12,7 @@ const allowedOrigins = [
   "https://www.easyad.com.ng",
   "https://easyad.com.ng",
   "http://localhost:3000", // keep this for local testing
+  "https://easyaddashboard.vercel.app/",
 ];
 
 app.use(
