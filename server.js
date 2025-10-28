@@ -7,11 +7,41 @@ import adRoutes from "./routes/adRoutes.js";
 dotenv.config();
 const app = express();
 
-app.use(cors());
+// ✅ CORS configuration
+const allowedOrigins = [
+  "https://www.easyad.com.ng",
+  "https://easyad.com.ng",
+  "http://localhost:3000", // keep this for local testing
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+
+// ✅ Handle preflight OPTIONS requests
+app.options("*", cors());
+
+// Middleware
 app.use(express.json());
 
 // Routes
 app.use("/api/ad-request", adRoutes);
+
+// Test route
+app.get("/", (req, res) => {
+  res.send("🚀 EasyAd backend is running successfully!");
+});
 
 // MongoDB Connection
 mongoose
@@ -19,5 +49,6 @@ mongoose
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
+// Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
