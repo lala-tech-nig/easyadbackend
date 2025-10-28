@@ -1,5 +1,5 @@
 import express from "express";
-import AdRequest from "../models/AdRequest.js";
+import AdRequest from "../models/adRequest.js";
 import { generateEasyAdId } from "../utils/generateId.js";
 
 const router = express.Router();
